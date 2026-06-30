@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} | Chemical Enlightenment</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="icon" href="img/chemical-enlightenment-logo.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <img src="img/chemical-enlightenment-logo.png" alt="Chemical Enlightenment logo" width="40" height="40">
+      <span>Chemical Enlightenment</span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-nav">&#9776;</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a data-slug="index" href="index.html" class="{{ 'active' if active == 'index' else '' }}">Home</a>
+      <a data-slug="ap-chemistry" href="ap-chemistry.html" class="{{ 'active' if active == 'ap-chemistry' else '' }}">AP Chemistry</a>
+      <a data-slug="science-olympiad" href="science-olympiad.html" class="{{ 'active' if active == 'science-olympiad' else '' }}">Science Olympiad</a>
+      <a data-slug="general-chemistry" href="general-chemistry.html" class="{{ 'active' if active == 'general-chemistry' else '' }}">General Chemistry</a>
+    </nav>
+  </header>
+
+  <!-- #app content is PRERENDERED below (full content, no JS required).
+       app.js hydrates this for instant client-side navigation on http(s). -->
+  <main id="main" class="content" tabindex="-1">
+    <div id="app">
+      <h1 class="page-title">{{ title }}</h1>
+      {{ content }}
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; {{ year }} Chemical Enlightenment &middot; Free AP Chemistry &amp; Science Olympiad resources</p>
+  </footer>
+
+  <script src="js/content.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
