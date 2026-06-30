@@ -1,6 +1,6 @@
 ---
 title: "AP Chemistry"
-description: ""
+description: "Free AP Chemistry resources: unit-by-unit topics, common lab techniques, and practice exams to help you prepare and score higher."
 slug: "ap-chemistry"
 ---
 <div class="btn-row">

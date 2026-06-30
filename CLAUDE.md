@@ -43,3 +43,13 @@ Pushing to `main` triggers `.github/workflows/deploy.yml`, which runs
 `python build.py` and publishes `dist/` to GitHub Pages (Pages source must be
 **GitHub Actions**). Every route is a real file, so deep links resolve directly —
 no 404 fallback needed. Do not commit `dist/`.
+
+## SITE_URL (canonical / SEO base URL)
+`build.py` reads `SITE_URL` (env var) for canonical links, Open Graph tags,
+`sitemap.xml`, `robots.txt`, and the absolute asset URLs in `404.html`. It
+defaults to the GitHub Pages URL. When attaching a custom domain, set it, e.g.:
+```
+$env:SITE_URL = "https://www.chem-enlightenment.com"; python build.py
+```
+The CI workflow can export `SITE_URL` before the build step to bake the right
+base URL into the deployed site.

@@ -1,6 +1,6 @@
 ---
 title: "AP Chemistry — Topics by Unit"
-description: ""
+description: "All 9 AP Chemistry units at a glance — from atomic structure and bonding to kinetics, thermochemistry, and equilibrium."
 slug: "ap-chemistry-sub-page-unit-topics"
 ---
 ### Topics by Unit

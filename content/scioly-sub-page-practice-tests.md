@@ -1,6 +1,6 @@
 ---
 title: "Science Olympiad — Practice Tests"
-description: ""
+description: "Free Science Olympiad Chemistry Lab practice test resources and links to help you prepare for invitationals and tournaments."
 slug: "scioly-sub-page-practice-tests"
 ---
 #### Good practice test resources

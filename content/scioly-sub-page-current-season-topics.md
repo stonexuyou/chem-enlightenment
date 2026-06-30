@@ -1,6 +1,6 @@
 ---
 title: "Science Olympiad — Current Season Topics"
-description: ""
+description: "Science Olympiad Chemistry Lab study guide for this season's topics: stoichiometry, chemical reactions, and kinetics."
 slug: "scioly-sub-page-current-season-topics"
 ---
 ### Current Season Topics
@@ -65,7 +65,7 @@ x 100%
 
 Molarity =
 
-![Stoichiometry Conversion Chain (CE Website).png](img/stoichiometry-conversion-chain.png)
+![Stoichiometry conversion chain diagram for converting between mass, moles, and number of particles](img/stoichiometry-conversion-chain.png)
 
 Below is a list of the Polyatomic Ions you are required to know for Chemistry Lab
 
@@ -305,7 +305,7 @@ H: Activation Energy of reverse reaction (catalyzed)
 
 ​​​​​​
 
-![Kinetics Reaction Progression chart.png](img/kinetics-reaction-progression-chart.png)
+![Reaction progression energy diagram showing activation energies for catalyzed and uncatalyzed forward and reverse reactions](img/kinetics-reaction-progression-chart.png)
 
 Before we determine the Rate Laws, let's first learn the reaction orders and what they mean:
 
@@ -379,11 +379,11 @@ rate = 156250
 
 Overall reaction order = 1 + 2 = 3 ​​​​​​​​​​​​​​​​​​
 
-![Kinetics Experimental Data.png](img/kinetics-experimental-data.png)
+![Kinetics experimental data table of reactant concentrations and initial reaction rates used to determine reaction order](img/kinetics-experimental-data.png)
 
 Integrated Rate Laws are mathematical equations in chemical kinetics that relates the concentration of reactants to time, and can determine concentrations at any point in a reaction. Unlike differential rate laws (gives instantaneous rate), integrated rate laws helps determine reaction progress, calculate half-life, and know how fast a reaction is occurring over time.
 
-![Kinetics Integrated Rate Law table.png](img/kinetics-integrated-rate-law-table.png)
+![Integrated rate law table summarizing equations for zero, first, and second order reactions](img/kinetics-integrated-rate-law-table.png)
 
 / [A]0 = Initial concentration of reactant A, expressed in Molarity (M)
 

@@ -91,3 +91,27 @@ body {
   .site-nav.open { display: flex; }
   .site-nav a { padding: 12px 14px; }
 }
+
+/* Visible keyboard focus (a11y) */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.nav-toggle:focus-visible {
+  outline: 3px solid var(--blue-2);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.site-header a:focus-visible,
+.site-nav a:focus-visible,
+.brand:focus-visible,
+.nav-toggle:focus-visible { outline-color: #fff; }
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

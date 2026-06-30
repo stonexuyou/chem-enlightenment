@@ -1,6 +1,6 @@
 ---
 title: "Science Olympiad"
-description: ""
+description: "Free Science Olympiad Chemistry Lab resources: current-season topics, competition tips, and practice tests."
 slug: "science-olympiad"
 ---
 ### Chemistry Lab

@@ -1,6 +1,6 @@
 ---
 title: "Home"
-description: ""
+description: "Free AP Chemistry and Science Olympiad study resources, practice tests, and exam prep — completely free, no signup."
 slug: "index"
 ---
 ## Welcome

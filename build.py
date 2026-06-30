@@ -23,6 +23,10 @@ TEMPLATES = os.path.join(ROOT, "templates")
 STATIC = os.path.join(ROOT, "static")
 DIST = os.path.join(ROOT, "dist")
 
+# Base URL for canonical links, Open Graph, sitemap, robots, and 404 assets.
+# Override per environment (e.g. a custom domain):  $env:SITE_URL = "https://www.chem-enlightenment.com"
+SITE_URL = os.environ.get("SITE_URL", "https://youxu71.github.io/chem-enlightenment").rstrip("/")
+
 ORDER = ["index", "general-chemistry", "ap-chemistry",
          "ap-chemistry-sub-page-unit-topics", "ap-chemistry-sub-page-lab-techniques",
          "ap-chemistry-sub-page-practice-exams", "science-olympiad",
@@ -40,6 +44,58 @@ def active_for(slug):
     if slug.startswith("general-chemistry"):
         return "general-chemistry"
     return ""
+
+
+def canonical_for(slug):
+    return SITE_URL + "/" if slug == "index" else SITE_URL + "/" + slug + ".html"
+
+
+NOT_FOUND_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found | Chemical Enlightenment</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="{site}/img/chemical-enlightenment-logo.png">
+  <link rel="stylesheet" href="{site}/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{site}/">
+      <img src="{site}/img/chemical-enlightenment-logo.png" alt="Chemical Enlightenment logo" width="40" height="40">
+      <span>Chemical Enlightenment</span>
+    </a>
+  </header>
+  <main class="content">
+    <h1 class="page-title">Page not found</h1>
+    <p>Sorry, that page doesn&rsquo;t exist. <a href="{site}/">Return home</a>.</p>
+  </main>
+  <footer class="site-footer">
+    <p>&copy; {year} Chemical Enlightenment &middot; Free AP Chemistry &amp; Science Olympiad resources</p>
+  </footer>
+</body>
+</html>
+"""
+
+
+def write_seo_files(order, year):
+    """Emit sitemap.xml, robots.txt, and a branded 404.html into DIST."""
+    today = datetime.date.today().isoformat()
+
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for slug in order:
+        lines.append("  <url><loc>{}</loc><lastmod>{}</lastmod></url>".format(canonical_for(slug), today))
+    lines.append("</urlset>")
+    open(os.path.join(DIST, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(lines) + "\n")
+
+    open(os.path.join(DIST, "robots.txt"), "w", encoding="utf-8").write(
+        "User-agent: *\nAllow: /\nSitemap: {}/sitemap.xml\n".format(SITE_URL))
+
+    # Absolute asset URLs so the 404 renders correctly at any missing path depth.
+    open(os.path.join(DIST, "404.html"), "w", encoding="utf-8").write(
+        NOT_FOUND_HTML.format(site=SITE_URL, year=year))
 
 
 def parse_front_matter(text):
@@ -98,13 +154,17 @@ def main():
                              autoescape=False, undefined=jinja2.StrictUndefined)
     template = env.get_template("base.html")
     year = datetime.date.today().year
+    og_image = SITE_URL + "/img/chemical-enlightenment-logo.png"
     for slug in order:
         p = pages[slug]
         out = template.render(title=p["title"], description=p["description"],
-                              content=p["html"], active=active_for(slug), year=year)
+                              content=p["html"], active=active_for(slug), year=year,
+                              site_url=SITE_URL, canonical=canonical_for(slug), og_image=og_image)
         open(os.path.join(DIST, slug + ".html"), "w", encoding="utf-8").write(out)
 
-    print(f"Prerendered {len(order)} pages + content.js -> {DIST}")
+    write_seo_files(order, year)
+
+    print(f"Prerendered {len(order)} pages + content.js + sitemap/robots/404 -> {DIST}")
     for slug in order:
         print("  ", slug + ".html")
 

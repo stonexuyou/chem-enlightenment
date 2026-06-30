@@ -1,6 +1,6 @@
 ---
 title: "Science Olympiad — Tips for Competition"
-description: ""
+description: "Practical tips from a Science Olympiad competitor on preparing for Chemistry Lab — rules, safety, note sheets, and equipment."
 slug: "scioly-sub-page-tips-for-competition"
 ---
 #### Tips for Success
