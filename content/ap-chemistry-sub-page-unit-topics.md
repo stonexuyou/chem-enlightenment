@@ -125,7 +125,9 @@ Equilibrium is simply where those two rates happen to balance.
 </div>
 
 **What to take away:** compare **Q** (what the mixture is right now) with **K**
-(where it settles). Q < K means the forward reaction is still winning; Q > K
+(where it settles). Q wobbles around K instead of landing on it — with a
+countable number of particles that fluctuation is real, and it is what "dynamic"
+in *dynamic equilibrium* means. Q < K means the forward reaction is still winning; Q > K
 means the reverse is; Q = K is equilibrium. Adding N₂O₄, removing NO₂, or
 changing the volume all move **Q**, and the mixture drifts back until Q equals K
 again — that is Le Châtelier's principle. Temperature is the exception: it

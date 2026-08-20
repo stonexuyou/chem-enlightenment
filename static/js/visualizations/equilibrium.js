@@ -88,6 +88,8 @@
   var B_COLOR = "#a8552a", B_EDGE = "#7c3d1d", B_R = 5;      // NO2, brown
 
   var TOTAL_MIN = 40, TOTAL_MAX = 220;   // in NO2-equivalents (2*nA + nB)
+  /* Big enough that adding reactant displaces Q past the model's noise floor. */
+  var ADD_A = 12;
 
   function num(value, fallback) {
     var n = parseFloat(value);
@@ -324,17 +326,43 @@
 
     /* -- readouts ---------------------------------------------------- */
 
+    /*
+     * With only ~70 particles, Q genuinely rattles around K by tens of percent
+     * even once the system has settled -- that shot noise is real, and showing
+     * the instantaneous Q is honest. But classifying the *status* on it made the
+     * label flicker between "net forward" and "net reverse" while nothing was
+     * actually shifting, which reads as instability rather than equilibrium.
+     * So the tile shows instantaneous Q while the status is judged on a
+     * time-averaged Q: at equilibrium Q fluctuates *around* K, and that average
+     * is what "at equilibrium" actually means.
+     */
+    var Q_TAU = 6;        // seconds; must exceed the noise's own correlation time
+    var qAvg = null;
+
+    function stepAverage(dt) {
+      var c = counts();
+      var Q = reactionQuotient(c.a, c.b, volume());
+      if (!isFinite(Q) || qAvg === null || !isFinite(qAvg)) { qAvg = Q; return; }
+      var alpha = 1 - Math.exp(-dt / Q_TAU);
+      qAvg += (Q - qAvg) * alpha;
+    }
+
     var STATUS = {
       forward: "Q < K — net forward",
       reverse: "Q > K — net reverse",
       equal: "Q ≈ K — at equilibrium"
     };
 
+    /*
+     * With ~70 particles the relative count noise is ~1/sqrt(N) ~ 12 %, and Q
+     * goes as b^2/a, which amplifies it. A 20 % band is the honest threshold for
+     * "settled"; every genuine perturbation the controls can produce (see
+     * ADD_A below) displaces Q well beyond it.
+     */
     function classify(Q, K) {
       if (!isFinite(Q)) return "reverse";
-      // A stochastic model never lands exactly on K; treat a 12 % band as settled.
-      if (Q < K * 0.88) return "forward";
-      if (Q > K * 1.12) return "reverse";
+      if (Q < K * 0.80) return "forward";
+      if (Q > K * 1.20) return "reverse";
       return "equal";
     }
 
@@ -348,7 +376,7 @@
       ref.statB.textContent = c.b;
       ref.statQ.textContent = fmtQK(Q);
       ref.statK.textContent = fmtQK(K);
-      ref.statStatus.textContent = STATUS[classify(Q, K)];
+      ref.statStatus.textContent = STATUS[classify(qAvg === null ? Q : qAvg, K)];
 
       ref.volValue.textContent = V.toFixed(1) + " units";
       ref.tempValue.textContent = Math.round(num(ref.temp.value, 25)) + " °C";
@@ -367,7 +395,7 @@
       var c = counts();
       var K = equilibriumConstant(tempK());
       var Q = reactionQuotient(c.a, c.b, volume());
-      var state = classify(Q, K);
+      var state = classify(qAvg === null ? Q : qAvg, K);
       if (state === "forward") {
         return " Q is now below K, so the forward rate outruns the reverse rate " +
           "until the two match again — the mixture drifts toward more NO₂.";
@@ -410,7 +438,7 @@
     function onAddA() {
       var c = counts();
       if (2 * c.a + c.b >= TOTAL_MAX) { say("The container is already full for this model."); return; }
-      for (var j = 0; j < 6; j++) spawn(0);
+      for (var j = 0; j < ADD_A; j++) spawn(0);
       updateReadouts();
       draw();
       say("Adding N₂O₄ raises [N₂O₄], which lowers Q while K stays put." +
@@ -436,11 +464,15 @@
       ref.temp.value = String(defaults.tempC);
       boxW = cssW * (volume() / 2);
       seed(defaults.total);
+      qAvg = null;
       updateReadouts();
       draw();
       say("Starting from pure N₂O₄. Watch Q climb from 0 toward K as the forward " +
-        "reaction runs faster than the reverse one; once they match, the counts " +
-        "hold steady even though conversions keep happening in both directions.");
+        "reaction runs faster than the reverse one. Once they match, the counts " +
+        "hold roughly steady while conversions keep happening in both directions — " +
+        "Q rattles around K rather than sitting exactly on it, because a real " +
+        "mixture of countable particles genuinely fluctuates. That jitter is the " +
+        "equilibrium being dynamic, not the mixture shifting.");
     }
 
     /* -- loop -------------------------------------------------------- */
@@ -455,6 +487,7 @@
       lastTs = ts;
       move(dt);
       react(dt);
+      stepAverage(dt);
       draw();
       updateReadouts();
     }
