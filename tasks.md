@@ -31,8 +31,9 @@ See `visualization-plan.md`.
 - [x] Verify widget lifecycle across hydrated navigation, Back/Forward and
       `file://`
 - [x] Add Unit 5 reaction-energy / catalyst diagram (plan §2.1)
-- [ ] Remaining Phase 2 widgets: equilibrium particle model (§2.2), gas laws
-      (§2.3), solution dilution (§2.4)
+- [x] Add Unit 7 equilibrium particle model (plan §2.2) — first Canvas widget,
+      first rAF loop, exercises the registry's cleanup contract for real
+- [ ] Remaining Phase 2 widgets: gas laws (§2.3), solution dilution (§2.4)
 - [ ] Revisit a `{{chem:…}}` shortcode in `build.py` only if repeated raw-HTML
       embeds become hard to maintain
 

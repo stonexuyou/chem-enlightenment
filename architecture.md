@@ -51,8 +51,11 @@ See `visualization-plan.md` for the full plan. What exists today:
 - **Rendering:** vanilla JS + native SVG, styled from
   `static/css/visualizations.css` using the existing palette variables. Canvas
   is reserved for particle animation; Three.js for genuinely 3D widgets only.
-- Widgets so far: `titration.js` (Unit 8 strong acid–strong base titration)
-  and `reaction-energy.js` (Unit 5 reaction-coordinate / catalyst diagram).
+- Widgets so far: `titration.js` (Unit 8 strong acid–strong base titration),
+  `reaction-energy.js` (Unit 5 reaction-coordinate / catalyst diagram) and
+  `equilibrium.js` (Unit 7 particle model — the first Canvas widget, and the
+  first with a `requestAnimationFrame` loop and a `ResizeObserver`; its cleanup
+  cancels both, which repeated-navigation tests confirm stays balanced).
 - Shared widget furniture (`.chem-widget__stat`, `__slider`, `__control`,
   `__btn`, `__status`, `__explanation`) lives in the stylesheet's shared
   section; per-widget classes stay namespaced (`.chem-titration__*`,
