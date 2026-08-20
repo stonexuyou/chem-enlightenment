@@ -40,11 +40,71 @@
 
 .chem-widget__controls { margin-top: 20px; }
 
+.chem-widget__control { margin-bottom: 14px; }
+.chem-widget__control:last-child { margin-bottom: 0; }
+
+.chem-titration__slider-label,
+.chem-widget__control label {
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: var(--navy);
+}
+
+.chem-widget__control-value {
+  font-weight: 400;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.chem-widget__slider {
+  display: block;
+  width: 100%;
+  margin: 0;
+  /* Comfortable touch target around the native track. */
+  height: 32px;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+/* The titration widget stacks presets right under its single slider. */
+.chem-titration .chem-widget__slider { margin-bottom: 14px; }
+
+/* Match the site-wide focus treatment in style.css. */
+.chem-widget__slider:focus-visible,
+.chem-widget__btn:focus-visible {
+  outline: 3px solid var(--blue-2);
+  outline-offset: 2px;
+}
+
 .chem-widget__status {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 16px;
+}
+
+.chem-widget__stat {
+  flex: 1 1 130px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.chem-widget__stat-key {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+}
+.chem-widget__stat-value {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  /* Keep the readout from reflowing as digits change while dragging. */
+  font-variant-numeric: tabular-nums;
 }
 
 .chem-widget__explanation {
@@ -78,6 +138,16 @@
   color: var(--blue);
 }
 .chem-widget__btn--ghost:hover { background: var(--bg); color: var(--blue-2); }
+
+/* Shared SVG chart furniture. */
+.chem-titration__grid,
+.chem-reaction__grid { stroke: var(--line); stroke-width: 1; }
+.chem-titration__axis,
+.chem-reaction__axis { stroke: var(--muted); stroke-width: 1.5; }
+.chem-titration__tick,
+.chem-reaction__tick { fill: var(--muted); font-size: 1em; }
+.chem-titration__axis-label,
+.chem-reaction__axis-label { fill: var(--ink); font-size: 1em; font-weight: 600; }
 
 /* ---------------------------------------------------------------- *
  * Titration widget
@@ -114,8 +184,6 @@
 .chem-titration__titrant { fill: #cfe0f0; }
 .chem-titration__drop { fill: #9dc0dd; }
 
-/* --- curve --- */
-
 .chem-titration__curve {
   display: block;
   width: 100%;
@@ -123,11 +191,6 @@
   overflow: visible;
   font-family: inherit;
 }
-
-.chem-titration__grid { stroke: var(--line); stroke-width: 1; }
-.chem-titration__axis { stroke: var(--muted); stroke-width: 1.5; }
-.chem-titration__tick { fill: var(--muted); font-size: 1em; }
-.chem-titration__axis-label { fill: var(--ink); font-size: 1em; font-weight: 600; }
 
 .chem-titration__curve-line {
   fill: none;
@@ -164,60 +227,10 @@
   stroke-width: 2.5;
 }
 
-/* --- controls --- */
-
-.chem-titration__slider-label {
-  display: block;
-  font-weight: 600;
-  font-size: 15px;
-  margin-bottom: 8px;
-  color: var(--navy);
-}
-
-.chem-titration__slider {
-  display: block;
-  width: 100%;
-  margin: 0 0 14px;
-  /* Comfortable touch target around the native track. */
-  height: 32px;
-  accent-color: var(--blue);
-  cursor: pointer;
-}
-
-/* Match the site-wide focus treatment in style.css. */
-.chem-titration__slider:focus-visible,
-.chem-widget__btn:focus-visible {
-  outline: 3px solid var(--blue-2);
-  outline-offset: 2px;
-}
-
 .chem-titration__presets {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-.chem-titration__stat {
-  flex: 1 1 130px;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 8px 12px;
-}
-.chem-titration__stat-key {
-  display: block;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-  color: var(--muted);
-}
-.chem-titration__stat-value {
-  display: block;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--navy);
-  /* Keep the readout from reflowing as digits change while dragging. */
-  font-variant-numeric: tabular-nums;
 }
 
 .chem-titration__actions {
@@ -226,12 +239,108 @@
   gap: 10px;
 }
 
+/* ---------------------------------------------------------------- *
+ * Reaction-energy widget
+ * ---------------------------------------------------------------- */
+
+.chem-reaction__diagram-pane {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+.chem-reaction__diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: inherit;
+}
+
+/* Reactant / product reference levels. */
+.chem-reaction__level {
+  stroke: var(--line);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.chem-reaction__curve {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.chem-reaction__curve--active { stroke: var(--blue); }
+/* Uncatalysed path: dashed as well as paler, so it reads without relying on colour. */
+.chem-reaction__curve--plain {
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+  opacity: .8;
+}
+
+.chem-reaction__arrow {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+}
+.chem-reaction__arrow-head { fill: var(--navy); }
+.chem-reaction__arrow--dh { stroke: var(--blue); }
+.chem-reaction__arrow--dh-head { fill: var(--blue); }
+
+.chem-reaction__measure {
+  fill: var(--navy);
+  font-size: 1em;
+  font-weight: 700;
+}
+.chem-reaction__species {
+  fill: var(--ink);
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.chem-reaction__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.chem-reaction__legend[hidden] { display: none; }
+.chem-reaction__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.chem-reaction__key {
+  display: inline-block;
+  width: 26px;
+  height: 0;
+  border-top-width: 3px;
+  border-top-style: solid;
+}
+.chem-reaction__key--active { border-top-color: var(--blue); }
+.chem-reaction__key--plain {
+  border-top-color: var(--muted);
+  border-top-style: dashed;
+}
+
+.chem-reaction__actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+/* ---------------------------------------------------------------- *
+ * Narrow screens
+ * ---------------------------------------------------------------- */
+
 @media (max-width: 560px) {
   .chem-widget { padding: 16px; }
   .chem-widget__visual { gap: 14px; }
   .chem-titration__beaker-pane { flex: 1 1 100%; }
   .chem-titration__beaker { max-width: 96px; }
   .chem-titration__curve-pane { flex: 1 1 100%; }
-  .chem-titration__stat { flex: 1 1 100%; }
+  .chem-widget__stat { flex: 1 1 100%; }
   .chem-titration__presets .chem-widget__btn { flex: 1 1 auto; }
 }

@@ -30,8 +30,9 @@ See `visualization-plan.md`.
 - [x] Add Unit 8 strong acid/strong base titration prototype
 - [x] Verify widget lifecycle across hydrated navigation, Back/Forward and
       `file://`
-- [ ] Pick the next 3–5 concepts to prototype (plan suggests reaction
-      energy/kinetics, equilibrium particles, gas laws, dilution)
+- [x] Add Unit 5 reaction-energy / catalyst diagram (plan §2.1)
+- [ ] Remaining Phase 2 widgets: equilibrium particle model (§2.2), gas laws
+      (§2.3), solution dilution (§2.4)
 - [ ] Revisit a `{{chem:…}}` shortcode in `build.py` only if repeated raw-HTML
       embeds become hard to maintain
 

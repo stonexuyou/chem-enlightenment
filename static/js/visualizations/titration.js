@@ -311,18 +311,18 @@
         '<label class="chem-titration__slider-label" data-ref="sliderLabel">' +
           escapeAttr(model.acid) + " added" +
         "</label>" +
-        '<input class="chem-titration__slider" data-ref="slider" type="range" min="0" max="' +
+        '<input class="chem-widget__slider" data-ref="slider" type="range" min="0" max="' +
           geom.vmax + '" step="0.1" value="0">' +
         '<div class="chem-titration__presets" data-ref="presets" role="group" ' +
           'aria-label="Jump to a titrant volume"></div>' +
       "</div>" +
       '<div class="chem-widget__status">' +
-        '<div class="chem-titration__stat"><span class="chem-titration__stat-key">Titrant added</span>' +
-          '<span class="chem-titration__stat-value" data-ref="volume"></span></div>' +
-        '<div class="chem-titration__stat"><span class="chem-titration__stat-key">pH</span>' +
-          '<span class="chem-titration__stat-value" data-ref="ph"></span></div>' +
-        '<div class="chem-titration__stat"><span class="chem-titration__stat-key">Region</span>' +
-          '<span class="chem-titration__stat-value" data-ref="region"></span></div>' +
+        '<div class="chem-widget__stat"><span class="chem-widget__stat-key">Titrant added</span>' +
+          '<span class="chem-widget__stat-value" data-ref="volume"></span></div>' +
+        '<div class="chem-widget__stat"><span class="chem-widget__stat-key">pH</span>' +
+          '<span class="chem-widget__stat-value" data-ref="ph"></span></div>' +
+        '<div class="chem-widget__stat"><span class="chem-widget__stat-key">Region</span>' +
+          '<span class="chem-widget__stat-value" data-ref="region"></span></div>' +
       "</div>" +
       '<p class="chem-widget__explanation" data-ref="explanation" aria-live="polite"></p>' +
       '<div class="chem-titration__actions">' +
