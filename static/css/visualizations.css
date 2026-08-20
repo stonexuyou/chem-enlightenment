@@ -387,6 +387,74 @@
 }
 
 /* ---------------------------------------------------------------- *
+ * Gas-law widget
+ * ---------------------------------------------------------------- */
+
+.chem-gas__stage {
+  display: flex;
+  justify-content: center;
+}
+
+/* Tall and narrow: the piston needs vertical travel to be legible. */
+.chem-gas__canvas {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.chem-gas__actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+/* ---------------------------------------------------------------- *
+ * Dilution widget
+ * ---------------------------------------------------------------- */
+
+.chem-dilution__diagram-pane {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+.chem-dilution__diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: inherit;
+}
+
+.chem-dilution__glass {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.chem-dilution__liquid { fill: #d6e8f5; }
+.chem-dilution__solute { fill: var(--blue); }
+
+.chem-dilution__arrow { stroke: var(--muted); stroke-width: 2; }
+.chem-dilution__arrow-head { fill: var(--muted); }
+
+.chem-dilution__caption {
+  fill: var(--navy);
+  font-size: 1.15em;
+  font-weight: 700;
+}
+.chem-dilution__sub { fill: var(--muted); font-size: 1em; }
+.chem-dilution__note { fill: var(--ink); font-size: 1em; font-weight: 600; }
+
+.chem-dilution__actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+/* ---------------------------------------------------------------- *
  * Narrow screens
  * ---------------------------------------------------------------- */
 
@@ -400,4 +468,5 @@
   .chem-titration__presets .chem-widget__btn { flex: 1 1 auto; }
   .chem-equilibrium__canvas { height: 200px; }
   .chem-equilibrium__buttons .chem-widget__btn { flex: 1 1 auto; }
+  .chem-gas__canvas { height: 260px; max-width: 220px; }
 }

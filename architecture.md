@@ -51,11 +51,19 @@ See `visualization-plan.md` for the full plan. What exists today:
 - **Rendering:** vanilla JS + native SVG, styled from
   `static/css/visualizations.css` using the existing palette variables. Canvas
   is reserved for particle animation; Three.js for genuinely 3D widgets only.
-- Widgets so far: `titration.js` (Unit 8 strong acid–strong base titration),
-  `reaction-energy.js` (Unit 5 reaction-coordinate / catalyst diagram) and
-  `equilibrium.js` (Unit 7 particle model — the first Canvas widget, and the
-  first with a `requestAnimationFrame` loop and a `ResizeObserver`; its cleanup
-  cancels both, which repeated-navigation tests confirm stays balanced).
+- Widgets so far, all registered the same way:
+  - `titration.js` — Unit 8 strong acid–strong base titration (SVG)
+  - `reaction-energy.js` — Unit 5 reaction coordinate / catalyst (SVG)
+  - `equilibrium.js` — Unit 7 particle model (Canvas + rAF + ResizeObserver)
+  - `gas-law.js` — Unit 3 ideal gas law with a piston (Canvas + rAF)
+  - `dilution.js` — Unit 3 M₁V₁ = M₂V₂ (SVG; no loop, so no loop to clean up)
+- **Canvas vs SVG:** SVG unless the widget animates many independent objects
+  per frame. Only the two particle models earn a canvas and a render loop.
+- Widgets holding a `requestAnimationFrame` loop or a `ResizeObserver` must
+  cancel both in their cleanup and guard their callbacks with a `destroyed`
+  flag — cleanup nulls `ctx`/`ref`, so a surviving callback would throw every
+  tick. Repeated-navigation tests confirm observers created, disconnects and
+  rAF cancels stay exactly balanced.
 - Shared widget furniture (`.chem-widget__stat`, `__slider`, `__control`,
   `__btn`, `__status`, `__explanation`) lives in the stylesheet's shared
   section; per-widget classes stay namespaced (`.chem-titration__*`,

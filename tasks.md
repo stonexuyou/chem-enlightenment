@@ -33,7 +33,10 @@ See `visualization-plan.md`.
 - [x] Add Unit 5 reaction-energy / catalyst diagram (plan §2.1)
 - [x] Add Unit 7 equilibrium particle model (plan §2.2) — first Canvas widget,
       first rAF loop, exercises the registry's cleanup contract for real
-- [ ] Remaining Phase 2 widgets: gas laws (§2.3), solution dilution (§2.4)
+- [x] Add Unit 3 ideal-gas / piston widget (plan §2.3)
+- [x] Add Unit 3 dilution widget (plan §2.4)
+- [ ] Phase 2 complete — next is Phase 3 (Three.js VSEPR viewer), which
+      first needs a pinned dependency strategy (vendored vs pinned CDN)
 - [ ] Revisit a `{{chem:…}}` shortcode in `build.py` only if repeated raw-HTML
       embeds become hard to maintain
 
