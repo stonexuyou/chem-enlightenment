@@ -33,6 +33,23 @@ Open `dist/index.html`. (Instant client-side nav only shows over http(s).)
 - Adding a top-level nav item means editing **both** the `nav` list in `build.py`
   and the `<nav>` in `templates/base.html`.
 
+## Interactive widgets (ChemViz)
+- Embed one from Markdown with an inert placeholder — raw HTML passes through
+  Python-Markdown untouched, so `build.py` needs no changes:
+  `<div class="chem-widget" data-chem-widget="titration" data-acid="HCl" …>`
+  with a `<noscript>` fallback inside.
+- Widget code lives in `static/js/visualizations/`; register with
+  `ChemViz.register(name, function (el, options) { … return cleanup; })`.
+  `data-*` attributes arrive as camelCased `options`.
+- `app.js` owns the lifecycle: `initAll` at startup (before the `file://`
+  return) and `destroyAll()`/`initAll()` around each `#app` swap. Return a
+  cleanup function from any widget that adds timers, observers, rAF loops or
+  window-level listeners.
+- New widget scripts must be added to `templates/base.html` **after**
+  `registry.js` and **before** `app.js`.
+- Style in `static/css/visualizations.css` using the existing palette
+  variables. Vanilla JS + native SVG — no framework, bundler, or npm.
+
 ## Add a page
 1. Create `content/<slug>.md` with front matter (`title`, `description`, `slug`).
 2. Add `<slug>` to `ORDER` in `build.py`.

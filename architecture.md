@@ -32,13 +32,30 @@ in a few hundred lines of vanilla Python/JS with no build toolchain.
 
 ## Planned additions and their architectural impact
 
-### Interactive demonstration widgets (Phase 2 of roadmap)
-- Content is currently plain Markdown → HTML via `build.py`. Embedding
-  interactive widgets requires extending the markdown pipeline to allow
-  raw HTML/JS blocks (or a shortcode syntax) per page.
-- Widgets should be self-contained vanilla JS/canvas, loaded from
-  `static/js/`, styled via `static/css/style.css` to match the existing
-  theme — no new framework dependency.
+### Interactive demonstration widgets — MVP shipped
+See `visualization-plan.md` for the full plan. What exists today:
+
+- **`window.ChemViz`** (`static/js/visualizations/registry.js`) — a ~90-line
+  registry/lifecycle: `register(name, initializer)`, `initAll(root)`,
+  `destroyAll()`. An initializer may return a cleanup function.
+- **Embed convention:** content Markdown holds an inert placeholder,
+  `<div class="chem-widget" data-chem-widget="titration" data-…>` with a
+  `<noscript>` fallback inside. Python-Markdown passes raw HTML blocks through
+  untouched, so **`build.py` needed no changes** — the same placeholder ends up
+  in both the prerendered HTML and `content.js`.
+- **Lifecycle wiring** in `static/js/app.js`: `initAll(document)` runs at
+  startup *before* the `file://` bail-out (so widgets work in local preview),
+  and `swap()` calls `destroyAll()` before replacing `#app` and `initAll(app)`
+  after. `initAll` skips elements already flagged
+  `data-chem-widget-initialized`, so repeated navigation cannot double-init.
+- **Rendering:** vanilla JS + native SVG, styled from
+  `static/css/visualizations.css` using the existing palette variables. Canvas
+  is reserved for particle animation; Three.js for genuinely 3D widgets only.
+- First widget: `static/js/visualizations/titration.js` (Unit 8 strong
+  acid–strong base titration simulator).
+
+Scripts load in dependency order in `templates/base.html`: `content.js` →
+`registry.js` → widget scripts → `app.js`. No bundler, no npm.
 
 ### Self-recorded videos (Phase 3)
 - No architecture change if using YouTube embeds (just an `<iframe>` pattern

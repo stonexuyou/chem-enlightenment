@@ -11,6 +11,10 @@
  * prerendered pages work as a normal multi-page site.
  */
 (function () {
+  // Interactive widgets are embedded in the prerendered markup, so bring them up
+  // before the file:// bail-out below — they work in local file preview too.
+  if (window.ChemViz) window.ChemViz.initAll(document);
+
   if (location.protocol === "file:") return;
 
   var SITE = window.SITE || { pages: {} };
@@ -67,7 +71,10 @@
     }
     document.title = page.title + " | Chemical Enlightenment";
     setMeta("description", page.description);
+    // Tear widgets down before their DOM is discarded, then bring up the new page's.
+    if (window.ChemViz) window.ChemViz.destroyAll();
     app.innerHTML = '<h1 class="page-title">' + escapeText(page.title) + "</h1>" + page.html;
+    if (window.ChemViz) window.ChemViz.initAll(app);
     setActiveNav(sectionOf(slug));
     closeMenu();
     window.scrollTo(0, 0);

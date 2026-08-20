@@ -19,9 +19,21 @@ a phase wraps.
       `templates/base.html`
 - [ ] `python build.py` and spot-check `dist/` output for each new page
 
-## Up next (Phase 2 — not started)
-- [ ] Pick first 3–5 concepts to prototype as interactive widgets
-- [ ] Decide markdown-embed approach for widgets in `build.py`
+## Phase 2 — Interactive demonstrations (MVP done)
+See `visualization-plan.md`.
+
+- [x] Choose first visualization architecture (vanilla JS + native SVG, no
+      framework/bundler)
+- [x] Decide markdown-embed approach — raw HTML placeholder passes through
+      Python-Markdown untouched, so `build.py` needed no changes
+- [x] Implement reusable widget registry/lifecycle (`window.ChemViz`)
+- [x] Add Unit 8 strong acid/strong base titration prototype
+- [x] Verify widget lifecycle across hydrated navigation, Back/Forward and
+      `file://`
+- [ ] Pick the next 3–5 concepts to prototype (plan suggests reaction
+      energy/kinetics, equilibrium particles, gas laws, dilution)
+- [ ] Revisit a `{{chem:…}}` shortcode in `build.py` only if repeated raw-HTML
+      embeds become hard to maintain
 
 ## Backlog
 See `roadmap.md` Phases 3–5 (videos, cross-linking, built-in AI).

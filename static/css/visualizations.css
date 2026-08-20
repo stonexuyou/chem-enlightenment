@@ -1,0 +1,237 @@
+/*
+ * Styles for ChemViz interactive visualizations.
+ * Reuses the site palette from style.css (--navy, --blue, --ink, --muted, --line, --bg).
+ */
+
+/* ---------------------------------------------------------------- *
+ * Shared widget shell
+ * ---------------------------------------------------------------- */
+
+.chem-widget {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 28px 0;
+  box-shadow: 0 4px 18px rgba(11, 31, 51, .07);
+}
+
+/* Placeholder before JS runs (and the <noscript> fallback) shouldn't look broken. */
+.chem-widget:not([data-chem-widget-initialized]) { color: var(--muted); font-size: 15px; }
+
+.chem-widget__header { margin-bottom: 16px; }
+.chem-widget__header h4 {
+  margin: 0 0 4px;
+  font-size: 19px;
+  color: var(--navy);
+}
+.chem-widget__header p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.chem-widget__visual {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+
+.chem-widget__controls { margin-top: 20px; }
+
+.chem-widget__status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.chem-widget__explanation {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  background: var(--bg);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 8px 8px 0;
+  font-size: 14.5px;
+  /* Reserve height so committing a new explanation doesn't jump the layout. */
+  min-height: 3.6em;
+}
+
+.chem-widget__btn {
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.2;
+  background: var(--blue);
+  color: #fff;
+  border: 1px solid var(--blue);
+  border-radius: 7px;
+  padding: 9px 14px;
+  min-height: 40px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.chem-widget__btn:hover { background: var(--blue-2); border-color: var(--blue-2); }
+
+.chem-widget__btn--ghost {
+  background: #fff;
+  color: var(--blue);
+}
+.chem-widget__btn--ghost:hover { background: var(--bg); color: var(--blue-2); }
+
+/* ---------------------------------------------------------------- *
+ * Titration widget
+ * ---------------------------------------------------------------- */
+
+.chem-titration__beaker-pane {
+  flex: 0 1 150px;
+  text-align: center;
+}
+
+.chem-titration__curve-pane {
+  flex: 1 1 320px;
+  min-width: 0; /* let the SVG shrink instead of forcing the row wider */
+}
+
+.chem-titration__beaker {
+  width: 100%;
+  max-width: 130px;
+  height: auto;
+}
+
+.chem-titration__swatch-label {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.chem-titration__glass {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.chem-titration__titrant { fill: #cfe0f0; }
+.chem-titration__drop { fill: #9dc0dd; }
+
+/* --- curve --- */
+
+.chem-titration__curve {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: inherit;
+}
+
+.chem-titration__grid { stroke: var(--line); stroke-width: 1; }
+.chem-titration__axis { stroke: var(--muted); stroke-width: 1.5; }
+.chem-titration__tick { fill: var(--muted); font-size: 1em; }
+.chem-titration__axis-label { fill: var(--ink); font-size: 1em; font-weight: 600; }
+
+.chem-titration__curve-line {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chem-titration__equiv-line {
+  stroke: var(--muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+.chem-titration__equiv-dot {
+  fill: #fff;
+  stroke: var(--navy);
+  stroke-width: 2;
+}
+.chem-titration__equiv-label {
+  fill: var(--navy);
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.chem-titration__crosshair {
+  stroke: var(--navy);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  opacity: .55;
+}
+.chem-titration__current-dot {
+  stroke: var(--navy);
+  stroke-width: 2.5;
+}
+
+/* --- controls --- */
+
+.chem-titration__slider-label {
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: var(--navy);
+}
+
+.chem-titration__slider {
+  display: block;
+  width: 100%;
+  margin: 0 0 14px;
+  /* Comfortable touch target around the native track. */
+  height: 32px;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+/* Match the site-wide focus treatment in style.css. */
+.chem-titration__slider:focus-visible,
+.chem-widget__btn:focus-visible {
+  outline: 3px solid var(--blue-2);
+  outline-offset: 2px;
+}
+
+.chem-titration__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chem-titration__stat {
+  flex: 1 1 130px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.chem-titration__stat-key {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+}
+.chem-titration__stat-value {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  /* Keep the readout from reflowing as digits change while dragging. */
+  font-variant-numeric: tabular-nums;
+}
+
+.chem-titration__actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 560px) {
+  .chem-widget { padding: 16px; }
+  .chem-widget__visual { gap: 14px; }
+  .chem-titration__beaker-pane { flex: 1 1 100%; }
+  .chem-titration__beaker { max-width: 96px; }
+  .chem-titration__curve-pane { flex: 1 1 100%; }
+  .chem-titration__stat { flex: 1 1 100%; }
+  .chem-titration__presets .chem-widget__btn { flex: 1 1 auto; }
+}
