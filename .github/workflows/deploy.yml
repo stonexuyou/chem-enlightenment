@@ -26,6 +26,14 @@ jobs:
         run: pip install -r requirements.txt
       - name: Build site
         run: python build.py
+        env:
+          # Bakes the canonical/OG/sitemap base URL into the build.
+          # To move to the custom domain, change this one line to
+          #   https://www.chem-enlightenment.com
+          # but only AFTER the DNS records point at GitHub Pages -- setting a
+          # custom domain before DNS is ready takes the site offline, and
+          # chem-enlightenment.com currently serves a live Wix site.
+          SITE_URL: https://stonexuyou.github.io/chem-enlightenment
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

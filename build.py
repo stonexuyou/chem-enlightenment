@@ -14,6 +14,7 @@ import os
 import json
 import shutil
 import datetime
+import urllib.parse
 import markdown
 import jinja2
 
@@ -25,7 +26,7 @@ DIST = os.path.join(ROOT, "dist")
 
 # Base URL for canonical links, Open Graph, sitemap, robots, and 404 assets.
 # Override per environment (e.g. a custom domain):  $env:SITE_URL = "https://www.chem-enlightenment.com"
-SITE_URL = os.environ.get("SITE_URL", "https://youxu71.github.io/chem-enlightenment").rstrip("/")
+SITE_URL = os.environ.get("SITE_URL", "https://stonexuyou.github.io/chem-enlightenment").rstrip("/")
 
 ORDER = ["index", "general-chemistry", "ap-chemistry",
          "ap-chemistry-sub-page-unit-topics", "ap-chemistry-sub-page-lab-techniques",
@@ -96,6 +97,13 @@ def write_seo_files(order, year):
     # Absolute asset URLs so the 404 renders correctly at any missing path depth.
     open(os.path.join(DIST, "404.html"), "w", encoding="utf-8").write(
         NOT_FOUND_HTML.format(site=SITE_URL, year=year))
+
+    # GitHub Pages needs a CNAME file in the artifact to serve a custom domain.
+    # Emitted only for a real domain -- writing one for a *.github.io URL would
+    # make Pages try to serve a host it does not own.
+    host = urllib.parse.urlparse(SITE_URL).hostname or ""
+    if host and not host.endswith(".github.io"):
+        open(os.path.join(DIST, "CNAME"), "w", encoding="utf-8").write(host + "\n")
 
 
 def parse_front_matter(text):
