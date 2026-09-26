@@ -57,6 +57,13 @@ See `visualization-plan.md` for the full plan. What exists today:
   - `equilibrium.js` — Unit 7 particle model (Canvas + rAF + ResizeObserver)
   - `gas-law.js` — Unit 3 ideal gas law with a piston (Canvas + rAF)
   - `dilution.js` — Unit 3 M₁V₁ = M₂V₂ (SVG; no loop, so no loop to clean up)
+  - `vsepr.js` — Unit 2 VSEPR geometry viewer (Three.js + WebGL)
+- **Three.js** is vendored and pinned under `static/vendor/three/` (see the
+  README there) and imported dynamically on first use, so the other fourteen
+  pages never fetch it. `build.py` copies `static/vendor/` into `dist/`.
+- A WebGL widget must also `renderer.dispose()` and `forceContextLoss()` in its
+  cleanup: browsers cap live contexts at roughly 16, so leaking one per visit
+  would eventually kill the viewer. Verified over 20 navigation round trips.
 - **Canvas vs SVG:** SVG unless the widget animates many independent objects
   per frame. Only the two particle models earn a canvas and a render loop.
 - Widgets holding a `requestAnimationFrame` loop or a `ResizeObserver` must
