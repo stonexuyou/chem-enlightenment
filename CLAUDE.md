@@ -1,6 +1,8 @@
-# CLAUDE.md — Chemical Enlightenment (hybrid)
+# Agent guide — Chemical Enlightenment (hybrid)
 
-Guidance for AI coding agents working in this repo.
+Guidance for AI coding agents working in this repo. Read via `CLAUDE.md`
+(Claude Code) or `AGENTS.md` (Codex and others) — both names resolve to
+this one file, so there is no second copy to keep in sync.
 
 ## What this is
 A **hybrid (prerendered + hydrated) static site** for chem-enlightenment.com.
