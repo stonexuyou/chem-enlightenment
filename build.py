@@ -29,7 +29,10 @@ DIST = os.path.join(ROOT, "dist")
 SITE_URL = os.environ.get("SITE_URL", "https://stonexuyou.github.io/chem-enlightenment").rstrip("/")
 
 ORDER = ["index", "general-chemistry", "ap-chemistry",
-         "ap-chemistry-sub-page-unit-topics", "ap-chemistry-sub-page-lab-techniques",
+         "ap-chemistry-sub-page-unit-topics",
+         "ap-chemistry-unit-3", "ap-chemistry-unit-5",
+         "ap-chemistry-unit-7", "ap-chemistry-unit-8",
+         "ap-chemistry-sub-page-lab-techniques",
          "ap-chemistry-sub-page-practice-exams", "science-olympiad",
          "scioly-sub-page-current-season-topics", "scioly-sub-page-tips-for-competition",
          "scioly-sub-page-practice-tests"]
