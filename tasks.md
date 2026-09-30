@@ -42,6 +42,8 @@ See `visualization-plan.md`.
 - [x] Dependency strategy: vendored, pinned Three.js 0.186.1 ESM under
       `static/vendor/three/`, loaded on demand so only Unit 2 pays for it
 - [x] Add Unit 2 VSEPR molecular-geometry viewer (plan Phase 3)
+- [x] VSEPR follow-ups: drawn angles match printed angles (with a checker),
+      `file://` fallback, and the lone-pair variants of 5- and 6-domain shapes
 - [ ] Consider further 3D (hybridisation, orbitals) now that the dependency
       and the WebGL teardown pattern exist
 - [ ] Revisit a `{{chem:…}}` shortcode in `build.py` only if repeated raw-HTML
