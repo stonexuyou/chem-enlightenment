@@ -35,8 +35,15 @@ See `visualization-plan.md`.
       first rAF loop, exercises the registry's cleanup contract for real
 - [x] Add Unit 3 ideal-gas / piston widget (plan §2.3)
 - [x] Add Unit 3 dilution widget (plan §2.4)
-- [ ] Phase 2 complete — next is Phase 3 (Three.js VSEPR viewer), which
-      first needs a pinned dependency strategy (vendored vs pinned CDN)
+- [x] Phase 2 complete
+
+## Phase 3 — First 3D visualization
+
+- [x] Dependency strategy: vendored, pinned Three.js 0.186.1 ESM under
+      `static/vendor/three/`, loaded on demand so only Unit 2 pays for it
+- [x] Add Unit 2 VSEPR molecular-geometry viewer (plan Phase 3)
+- [ ] Consider further 3D (hybridisation, orbitals) now that the dependency
+      and the WebGL teardown pattern exist
 - [ ] Revisit a `{{chem:…}}` shortcode in `build.py` only if repeated raw-HTML
       embeds become hard to maintain
 

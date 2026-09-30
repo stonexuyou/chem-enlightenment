@@ -30,7 +30,7 @@ SITE_URL = os.environ.get("SITE_URL", "https://stonexuyou.github.io/chem-enlight
 
 ORDER = ["index", "general-chemistry", "ap-chemistry",
          "ap-chemistry-sub-page-unit-topics",
-         "ap-chemistry-unit-3", "ap-chemistry-unit-5",
+         "ap-chemistry-unit-2", "ap-chemistry-unit-3", "ap-chemistry-unit-5",
          "ap-chemistry-unit-7", "ap-chemistry-unit-8",
          "ap-chemistry-sub-page-lab-techniques",
          "ap-chemistry-sub-page-practice-exams", "science-olympiad",
@@ -125,7 +125,7 @@ def clean_dist():
     if os.path.isdir(DIST):
         shutil.rmtree(DIST)
     os.makedirs(DIST)
-    for sub in ("css", "img", "js"):
+    for sub in ("css", "img", "js", "vendor"):
         src = os.path.join(STATIC, sub)
         if os.path.isdir(src):
             shutil.copytree(src, os.path.join(DIST, sub))

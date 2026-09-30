@@ -16,8 +16,9 @@ Atomic structure, electron configurations, and periodic trends.
 ## Unit 2: Compound Structure and Properties
 
 Chemical bonding, molecular structure, and the properties of compounds.
+Rotate 3D models and see why lone pairs bend a molecule out of shape.
 
-*Unit page coming soon.*
+[Explore Unit 2: VSEPR and molecular geometry](ap-chemistry-unit-2.html)
 
 ## Unit 3: Properties of Substances and Mixtures
 
