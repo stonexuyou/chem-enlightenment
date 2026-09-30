@@ -39,7 +39,21 @@ pairs, and they diverge the moment there is one:
 | 4 | Tetrahedral | 1 | Trigonal pyramidal | ≈107° |
 | 4 | Tetrahedral | 2 | Bent | ≈104.5° |
 | 5 | Trigonal bipyramidal | 0 | Trigonal bipyramidal | 90° and 120° |
+| 5 | Trigonal bipyramidal | 1 | Seesaw | ≈102° and ≈173° |
+| 5 | Trigonal bipyramidal | 2 | T-shaped | ≈87.5° |
+| 5 | Trigonal bipyramidal | 3 | Linear | 180° |
 | 6 | Octahedral | 0 | Octahedral | 90° |
+| 6 | Octahedral | 1 | Square pyramidal | ≈85° and ≈90° |
+| 6 | Octahedral | 2 | Square planar | 90° |
+
+An angle marked ≈ is the measured value for the example molecule in the viewer
+(NH₃, H₂O, SF₄ and so on); an unmarked angle is the ideal one. The viewer draws
+each model at the angle it prints, so the two always agree.
+
+With five or six domains the lone pairs go where they have the most room. In a
+trigonal bipyramid that is the equatorial plane, where a lone pair has two
+neighbours at 90° instead of the three it would have on the axis; in an octahedron
+two lone pairs go opposite each other, which is why XeF₄ is a flat square.
 
 Notice the angles shrink as lone pairs are added — 109.5° → 107° → 104.5° across
 CH₄, NH₃, H₂O. A lone pair is held by only one nucleus instead of two, so it

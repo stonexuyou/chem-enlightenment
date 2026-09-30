@@ -97,11 +97,64 @@
     AX5:   { formula: "AX₅",   example: "PCl₅", domains: BIPYRAMID,
              lone: 0, electron: "Trigonal bipyramidal", molecular: "Trigonal bipyramidal",
              angles: [90, 120] },
+    // Five domains: a trigonal bipyramid with lone pairs in the equatorial plane.
+    // The axial bonds lean away from the lone pairs, which is why they are a few
+    // degrees off a straight line or off 90 degrees.
+    AX4E:  { formula: "AX₄E",  example: "SF₄",
+             domains: [
+               [Math.cos(51 * RAD), Math.sin(51 * RAD), 0],
+               [Math.cos(51 * RAD), -Math.sin(51 * RAD), 0],
+               [Math.sin(3.5 * RAD), 0, Math.cos(3.5 * RAD)],
+               [Math.sin(3.5 * RAD), 0, -Math.cos(3.5 * RAD)],
+               [-1, 0, 0]],
+             lone: 1, electron: "Trigonal bipyramidal", molecular: "Seesaw",
+             angles: [102, 173], approx: true,
+             note: "The lone pair takes an equatorial position, where it has two " +
+               "neighbours at 90° instead of the three an axial position would give it." },
+    AX3E2: { formula: "AX₃E₂", example: "ClF₃",
+             domains: [
+               [1, 0, 0],
+               [Math.sin(2.5 * RAD), 0, Math.cos(2.5 * RAD)],
+               [Math.sin(2.5 * RAD), 0, -Math.cos(2.5 * RAD)],
+               [-0.5, S3, 0], [-0.5, -S3, 0]],
+             lone: 2, electron: "Trigonal bipyramidal", molecular: "T-shaped",
+             angles: [87.5], approx: true,
+             note: "Both lone pairs sit in the equatorial plane, which leaves the " +
+               "three atoms arranged in a T." },
+    AX2E3: { formula: "AX₂E₃", example: "XeF₂",
+             domains: [[0, 0, 1], [0, 0, -1], [1, 0, 0], [-0.5, S3, 0], [-0.5, -S3, 0]],
+             lone: 3, electron: "Trigonal bipyramidal", molecular: "Linear",
+             angles: [180],
+             note: "All three lone pairs sit in the equatorial plane, so the two atoms " +
+               "end up on the axis: the molecule is linear even though five domains " +
+               "surround the central atom." },
     AX6:   { formula: "AX₆",   example: "SF₆",  domains: OCTA,
-             lone: 0, electron: "Octahedral", molecular: "Octahedral", angles: [90] }
+             lone: 0, electron: "Octahedral", molecular: "Octahedral", angles: [90] },
+    // Six domains: an octahedron.
+    AX5E:  { formula: "AX₅E",  example: "BrF₅",
+             domains: [
+               [0, 0, 1],
+               [Math.cos(5 * RAD), 0, Math.sin(5 * RAD)],
+               [0, Math.cos(5 * RAD), Math.sin(5 * RAD)],
+               [-Math.cos(5 * RAD), 0, Math.sin(5 * RAD)],
+               [0, -Math.cos(5 * RAD), Math.sin(5 * RAD)],
+               [0, 0, -1]],
+             lone: 1, electron: "Octahedral", molecular: "Square pyramidal",
+             angles: [85, 90], approx: true,
+             note: "The lone pair takes one octahedral position and the atoms form a " +
+               "square pyramid; the four base atoms lean slightly away from it." },
+    AX4E2: { formula: "AX₄E₂", example: "XeF₄",
+             domains: [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]],
+             lone: 2, electron: "Octahedral", molecular: "Square planar",
+             angles: [90],
+             note: "The two lone pairs sit opposite each other, above and below the " +
+               "plane, which keeps them as far apart as possible and leaves a flat " +
+               "square of atoms." }
+
   };
 
-  var ORDER = ["AX2", "AX3", "AX2E", "AX4", "AX3E", "AX2E2", "AX5", "AX6"];
+  var ORDER = ["AX2", "AX3", "AX2E", "AX4", "AX3E", "AX2E2",
+               "AX5", "AX4E", "AX3E2", "AX2E3", "AX6", "AX5E", "AX4E2"];
 
   /* "≈107°" when measured for the example molecule, "109.5°" when ideal. */
   function angleText(shape) {
@@ -217,14 +270,19 @@
       ref.statD.textContent = p.bonds.length + " bonding" +
         (s.lone ? " + " + s.lone + " lone" : "");
 
+      var arrangement = s.electron.toLowerCase();
       var text = s.formula + " (" + s.example + "): " + s.domains.length +
-        " electron domains arrange themselves " + s.electron.toLowerCase() + ".";
+        " electron domains adopt " + (/^[aeiou]/.test(arrangement) ? "an " : "a ") +
+        arrangement + " arrangement.";
       if (s.lone) {
-        text += " " + s.lone + " of them " + (s.lone === 1 ? "is a lone pair, which" :
-          "are lone pairs, which") + " still take up space but are not atoms — so the " +
-          "shape you would measure is " + s.molecular.toLowerCase() + ", and the bond " +
-          "angle closes to " + s.angle + " in " + s.example + " because lone pairs " +
-          "repel a little harder than bonding pairs.";
+        text += s.lone === 1
+          ? " One of them is a lone pair, which still takes up space but is not an atom"
+          : " " + s.lone + " of them are lone pairs, which still take up space but are not atoms";
+        text += " — so the shape you would measure is " + s.molecular.toLowerCase() + ".";
+        text += s.note
+          ? " " + s.note + " Bond angle in " + s.example + ": " + s.angle + "."
+          : " The bond angle closes to " + s.angle + " in " + s.example + " because " +
+            "lone pairs repel a little harder than bonding pairs.";
       } else {
         text += " With no lone pairs the molecular geometry is the same as the " +
           "electron geometry: " + s.molecular.toLowerCase() + ", " + s.angle + ".";
