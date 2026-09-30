@@ -32,12 +32,37 @@
   /* ------------------------------------------------------------------ *
    * Geometry data
    *
-   * Unit vectors for the electron-domain arrangements. Bonds and lone pairs
+   * Unit vectors for each electron-domain arrangement. Bonds and lone pairs
    * are drawn from the same list -- that is the point of the model.
+   *
+   * The angle shown for a shape is the textbook value for its example molecule
+   * (NH3 is 107 degrees, not the ideal 109.5), and the vectors are *built from*
+   * that number, so what is drawn and what is printed cannot drift apart.
+   * tools/check-vsepr-geometry.js asserts exactly that.
    * ------------------------------------------------------------------ */
 
+  var RAD = Math.PI / 180;
   var S3 = Math.sqrt(3) / 2;
   var T = 1 / Math.sqrt(3);
+
+  /* Two bonds symmetric about +x, in the xy plane, `theta` degrees apart. */
+  function bentBonds(theta) {
+    var h = (theta / 2) * RAD;
+    return [[Math.cos(h), Math.sin(h), 0], [Math.cos(h), -Math.sin(h), 0]];
+  }
+
+  /*
+   * Three bonds around +z with every pairwise angle equal to `theta`. For bonds
+   * at polar angle b from the axis, cos(theta) = cos^2(b) + sin^2(b) cos(120),
+   * which solves to cos^2(b) = (cos(theta) + 1/2) / (3/2).
+   */
+  function pyramidBonds(theta) {
+    var cb = Math.sqrt((Math.cos(theta * RAD) + 0.5) / 1.5);
+    var sb = Math.sqrt(1 - cb * cb);
+    return [0, 120, 240].map(function (phi) {
+      return [sb * Math.cos(phi * RAD), sb * Math.sin(phi * RAD), cb];
+    });
+  }
 
   var TRIGONAL = [[1, 0, 0], [-0.5, S3, 0], [-0.5, -S3, 0]];
   var TETRA = [[T, T, T], [T, -T, -T], [-T, T, -T], [-T, -T, T]];
@@ -45,31 +70,45 @@
   var OCTA = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
 
   /*
-   * Lone pairs are listed last in each domain set so the remaining positions
-   * stay the bonded ones. For the tetrahedral cases this reproduces the
-   * familiar NH3 / H2O pictures.
+   * `domains` lists the bonds first and the lone pairs last, so the trailing
+   * `lone` entries are the lone pairs. `angles` are the bond angles printed for
+   * the shape; `approx` marks values measured for the example molecule rather
+   * than ideal.
    */
   var SHAPES = {
     AX2:   { formula: "AX₂",   example: "CO₂",  domains: [[1,0,0],[-1,0,0]],
-             lone: 0, electron: "Linear", molecular: "Linear", angle: "180°" },
+             lone: 0, electron: "Linear", molecular: "Linear", angles: [180] },
     AX3:   { formula: "AX₃",   example: "BF₃",  domains: TRIGONAL,
-             lone: 0, electron: "Trigonal planar", molecular: "Trigonal planar", angle: "120°" },
-    AX2E:  { formula: "AX₂E",  example: "SO₂",  domains: TRIGONAL,
-             lone: 1, electron: "Trigonal planar", molecular: "Bent", angle: "≈119°" },
+             lone: 0, electron: "Trigonal planar", molecular: "Trigonal planar", angles: [120] },
+    AX2E:  { formula: "AX₂E",  example: "SO₂",
+             domains: bentBonds(119).concat([[-1, 0, 0]]),
+             lone: 1, electron: "Trigonal planar", molecular: "Bent",
+             angles: [119], approx: true },
     AX4:   { formula: "AX₄",   example: "CH₄",  domains: TETRA,
-             lone: 0, electron: "Tetrahedral", molecular: "Tetrahedral", angle: "109.5°" },
-    AX3E:  { formula: "AX₃E",  example: "NH₃",  domains: TETRA,
-             lone: 1, electron: "Tetrahedral", molecular: "Trigonal pyramidal", angle: "≈107°" },
-    AX2E2: { formula: "AX₂E₂", example: "H₂O",  domains: TETRA,
-             lone: 2, electron: "Tetrahedral", molecular: "Bent", angle: "≈104.5°" },
+             lone: 0, electron: "Tetrahedral", molecular: "Tetrahedral", angles: [109.5] },
+    AX3E:  { formula: "AX₃E",  example: "NH₃",
+             domains: pyramidBonds(107).concat([[0, 0, -1]]),
+             lone: 1, electron: "Tetrahedral", molecular: "Trigonal pyramidal",
+             angles: [107], approx: true },
+    AX2E2: { formula: "AX₂E₂", example: "H₂O",
+             domains: bentBonds(104.5).concat([[-0.5, 0, S3], [-0.5, 0, -S3]]),
+             lone: 2, electron: "Tetrahedral", molecular: "Bent",
+             angles: [104.5], approx: true },
     AX5:   { formula: "AX₅",   example: "PCl₅", domains: BIPYRAMID,
              lone: 0, electron: "Trigonal bipyramidal", molecular: "Trigonal bipyramidal",
-             angle: "90° and 120°" },
+             angles: [90, 120] },
     AX6:   { formula: "AX₆",   example: "SF₆",  domains: OCTA,
-             lone: 0, electron: "Octahedral", molecular: "Octahedral", angle: "90°" }
+             lone: 0, electron: "Octahedral", molecular: "Octahedral", angles: [90] }
   };
 
   var ORDER = ["AX2", "AX3", "AX2E", "AX4", "AX3E", "AX2E2", "AX5", "AX6"];
+
+  /* "≈107°" when measured for the example molecule, "109.5°" when ideal. */
+  function angleText(shape) {
+    var mark = shape.approx ? "≈" : "";
+    return mark + shape.angles.join("° and " + mark) + "°";
+  }
+  ORDER.forEach(function (k) { SHAPES[k].angle = angleText(SHAPES[k]); });
 
   /* Bonded domains come first, lone pairs take the trailing positions. */
   function split(shape) {
@@ -184,8 +223,8 @@
         text += " " + s.lone + " of them " + (s.lone === 1 ? "is a lone pair, which" :
           "are lone pairs, which") + " still take up space but are not atoms — so the " +
           "shape you would measure is " + s.molecular.toLowerCase() + ", and the bond " +
-          "angle closes to " + s.angle + " because lone pairs repel a little harder " +
-          "than bonding pairs.";
+          "angle closes to " + s.angle + " in " + s.example + " because lone pairs " +
+          "repel a little harder than bonding pairs.";
       } else {
         text += " With no lone pairs the molecular geometry is the same as the " +
           "electron geometry: " + s.molecular.toLowerCase() + ", " + s.angle + ".";
