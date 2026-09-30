@@ -388,16 +388,34 @@
 
     updateText();
 
-    loadThree().then(function (T) {
-      if (destroyed) return;     // navigated away while the library was in flight
-      startScene(T);
-    }).catch(function (err) {
-      if (destroyed) return;
-      if (window.console) console.warn("ChemViz vsepr: 3D viewer unavailable", err);
-      ref.loading.textContent = "The 3D viewer could not load. The geometry names, " +
-        "bond angle and domain counts below still describe each shape.";
+    function unavailable(message) {
+      ref.loading.textContent = message;
       ref.stage.classList.add("chem-vsepr__canvas--failed");
-    });
+    }
+
+    /*
+     * Browsers give a page opened straight from disk an opaque origin and refuse
+     * to import an ES module from it, so over file:// the import cannot succeed.
+     * Say so up front instead of firing a request that is certain to be blocked
+     * and logging a CORS error. Only this widget is affected: every other
+     * ChemViz widget is a classic script and initialises normally on file://.
+     */
+    if (window.location && window.location.protocol === "file:") {
+      unavailable("The 3D view needs the site served over http(s); browsers block " +
+        "it on pages opened straight from disk. Run python3 -m http.server -d dist " +
+        "and open localhost, or use the published site. The geometry names, bond " +
+        "angles and domain counts below still work.");
+    } else {
+      loadThree().then(function (T) {
+        if (destroyed) return;     // navigated away while the library was in flight
+        startScene(T);
+      }).catch(function (err) {
+        if (destroyed) return;
+        if (window.console) console.warn("ChemViz vsepr: 3D viewer unavailable", err);
+        unavailable("The 3D viewer could not load. The geometry names, bond angles " +
+          "and domain counts below still describe each shape.");
+      });
+    }
 
     return function cleanup() {
       destroyed = true;

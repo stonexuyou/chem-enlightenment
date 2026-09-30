@@ -61,6 +61,12 @@ See `visualization-plan.md` for the full plan. What exists today:
 - **Three.js** is vendored and pinned under `static/vendor/three/` (see the
   README there) and imported dynamically on first use, so the other fourteen
   pages never fetch it. `build.py` copies `static/vendor/` into `dist/`.
+- **`file://`:** verified in headless Chrome on the built pages. Every classic-
+  script widget (titration, reaction energy, equilibrium, gas law, dilution)
+  initialises normally. Only the VSEPR viewer cannot: a page opened from disk has
+  an opaque origin and browsers refuse to import an ES module from it. `vsepr.js`
+  detects `file:` up front and shows its text readouts with a note instead of
+  firing an import that is certain to be blocked.
 - A WebGL widget must also `renderer.dispose()` and `forceContextLoss()` in its
   cleanup: browsers cap live contexts at roughly 16, so leaking one per visit
   would eventually kill the viewer. Verified over 20 navigation round trips.
