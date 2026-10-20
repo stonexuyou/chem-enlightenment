@@ -44,6 +44,11 @@ See `visualization-plan.md`.
 - [x] Add Unit 2 VSEPR molecular-geometry viewer (plan Phase 3)
 - [x] VSEPR follow-ups: drawn angles match printed angles (with a checker),
       `file://` fallback, and the lone-pair variants of 5- and 6-domain shapes
+- [x] Audit five-/six-domain lone-pair angle references against NIST CCCBDB;
+      label bond pairs, distinguish symmetry-derived values, and cite sources
+      on Unit 2
+- [ ] Manually accept the updated VSEPR viewer in a browser (user): rotation,
+      shape switching, mobile layout, and navigation away/back
 - [ ] Consider further 3D (hybridisation, orbitals) now that the dependency
       and the WebGL teardown pattern exist
 - [ ] Revisit a `{{chem:…}}` shortcode in `build.py` only if repeated raw-HTML

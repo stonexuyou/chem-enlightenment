@@ -38,7 +38,9 @@
    * The angle shown for a shape is the textbook value for its example molecule
    * (NH3 is 107 degrees, not the ideal 109.5), and the vectors are *built from*
    * that number, so what is drawn and what is printed cannot drift apart.
-   * tools/check-vsepr-geometry.js asserts exactly that.
+   * tools/check-vsepr-geometry.js asserts exactly that. Reference values and
+   * their scope are documented in content/ap-chemistry-unit-2.md. Bond lengths
+   * and lone-pair clouds remain schematic, not experimental coordinates.
    * ------------------------------------------------------------------ */
 
   var RAD = Math.PI / 180;
@@ -72,8 +74,8 @@
   /*
    * `domains` lists the bonds first and the lone pairs last, so the trailing
    * `lone` entries are the lone pairs. `angles` are the bond angles printed for
-   * the shape; `approx` marks values measured for the example molecule rather
-   * than ideal.
+   * the shape; `approx` marks rounded reference values for the example molecule
+   * rather than ideal.
    */
   var SHAPES = {
     AX2:   { formula: "AX₂",   example: "CO₂",  domains: [[1,0,0],[-1,0,0]],
@@ -102,25 +104,28 @@
     // degrees off a straight line or off 90 degrees.
     AX4E:  { formula: "AX₄E",  example: "SF₄",
              domains: [
-               [Math.cos(51 * RAD), Math.sin(51 * RAD), 0],
-               [Math.cos(51 * RAD), -Math.sin(51 * RAD), 0],
-               [Math.sin(3.5 * RAD), 0, Math.cos(3.5 * RAD)],
-               [Math.sin(3.5 * RAD), 0, -Math.cos(3.5 * RAD)],
+               [Math.cos(50.775 * RAD), Math.sin(50.775 * RAD), 0],
+               [Math.cos(50.775 * RAD), -Math.sin(50.775 * RAD), 0],
+               [Math.sin(3.465 * RAD), 0, Math.cos(3.465 * RAD)],
+               [Math.sin(3.465 * RAD), 0, -Math.cos(3.465 * RAD)],
                [-1, 0, 0]],
              lone: 1, electron: "Trigonal bipyramidal", molecular: "Seesaw",
-             angles: [102, 173], approx: true,
+             angles: [87.8, 101.6, 173.1], approx: true,
              note: "The lone pair takes an equatorial position, where it has two " +
-               "neighbours at 90° instead of the three an axial position would give it." },
+               "neighbours near 90° instead of the three an axial position would give it. " +
+               "The listed angles are axial–equatorial, equatorial–equatorial and " +
+               "axial–axial, respectively." },
     AX3E2: { formula: "AX₃E₂", example: "ClF₃",
              domains: [
                [1, 0, 0],
-               [Math.sin(2.5 * RAD), 0, Math.cos(2.5 * RAD)],
-               [Math.sin(2.5 * RAD), 0, -Math.cos(2.5 * RAD)],
+               [Math.sin(2.55 * RAD), 0, Math.cos(2.55 * RAD)],
+               [Math.sin(2.55 * RAD), 0, -Math.cos(2.55 * RAD)],
                [-0.5, S3, 0], [-0.5, -S3, 0]],
              lone: 2, electron: "Trigonal bipyramidal", molecular: "T-shaped",
-             angles: [87.5], approx: true,
+             angles: [87.5, 174.9], approx: true,
              note: "Both lone pairs sit in the equatorial plane, which leaves the " +
-               "three atoms arranged in a T." },
+               "three atoms arranged in a T. The listed angles are axial–equatorial and " +
+               "axial–axial, respectively." },
     AX2E3: { formula: "AX₂E₃", example: "XeF₂",
              domains: [[0, 0, 1], [0, 0, -1], [1, 0, 0], [-0.5, S3, 0], [-0.5, -S3, 0]],
              lone: 3, electron: "Trigonal bipyramidal", molecular: "Linear",
@@ -134,15 +139,16 @@
     AX5E:  { formula: "AX₅E",  example: "BrF₅",
              domains: [
                [0, 0, 1],
-               [Math.cos(5 * RAD), 0, Math.sin(5 * RAD)],
-               [0, Math.cos(5 * RAD), Math.sin(5 * RAD)],
-               [-Math.cos(5 * RAD), 0, Math.sin(5 * RAD)],
-               [0, -Math.cos(5 * RAD), Math.sin(5 * RAD)],
+               [Math.cos(5.2 * RAD), 0, Math.sin(5.2 * RAD)],
+               [0, Math.cos(5.2 * RAD), Math.sin(5.2 * RAD)],
+               [-Math.cos(5.2 * RAD), 0, Math.sin(5.2 * RAD)],
+               [0, -Math.cos(5.2 * RAD), Math.sin(5.2 * RAD)],
                [0, 0, -1]],
              lone: 1, electron: "Octahedral", molecular: "Square pyramidal",
-             angles: [85, 90], approx: true,
+             angles: [84.8, 89.5], approx: true,
              note: "The lone pair takes one octahedral position and the atoms form a " +
-               "square pyramid; the four base atoms lean slightly away from it." },
+               "square pyramid; the four base atoms lean slightly away from it. The listed " +
+               "angles are apical–basal and adjacent basal–basal, respectively." },
     AX4E2: { formula: "AX₄E₂", example: "XeF₄",
              domains: [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]],
              lone: 2, electron: "Octahedral", molecular: "Square planar",
@@ -156,7 +162,7 @@
   var ORDER = ["AX2", "AX3", "AX2E", "AX4", "AX3E", "AX2E2",
                "AX5", "AX4E", "AX3E2", "AX2E3", "AX6", "AX5E", "AX4E2"];
 
-  /* "≈107°" when measured for the example molecule, "109.5°" when ideal. */
+  /* Sources and rounding policy: content/ap-chemistry-unit-2.md. */
   function angleText(shape) {
     var mark = shape.approx ? "≈" : "";
     return mark + shape.angles.join("° and " + mark) + "°";
@@ -227,7 +233,7 @@
           '<span class="chem-widget__stat-value" data-ref="statE"></span></div>' +
         '<div class="chem-widget__stat"><span class="chem-widget__stat-key">Molecular geometry</span>' +
           '<span class="chem-widget__stat-value" data-ref="statM"></span></div>' +
-        '<div class="chem-widget__stat"><span class="chem-widget__stat-key">Bond angle</span>' +
+        '<div class="chem-widget__stat"><span class="chem-widget__stat-key">Selected bond angles</span>' +
           '<span class="chem-widget__stat-value" data-ref="statA"></span></div>' +
         '<div class="chem-widget__stat"><span class="chem-widget__stat-key">Domains</span>' +
           '<span class="chem-widget__stat-value" data-ref="statD"></span></div>' +
